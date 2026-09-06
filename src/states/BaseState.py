@@ -4,7 +4,7 @@ class BaseState:
     def __init__(self):
         pass
 
-    def enter(self):
+    def enter(self, params=None):
         pass
 
     def exit(self):
@@ -12,6 +12,6 @@ class BaseState:
 
     def update(self, params):
         pass
-
+    
     def render(self, params):
         pass
