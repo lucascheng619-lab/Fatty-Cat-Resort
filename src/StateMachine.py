@@ -5,8 +5,8 @@ class StateMachine:
         self.empty = type('EmptyState', (), {
             "enter": lambda params=None: None,
             "exit": lambda: None,
-            "update": lambda: None,
-            "render": lambda: None
+            "update": lambda params=None: None,
+            "render": lambda params=None: None
         })
 
         self.states = states
