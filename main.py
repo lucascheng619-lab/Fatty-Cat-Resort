@@ -14,6 +14,8 @@ pygame.display.toggle_fullscreen()
 
 running = True
 
+gStateMachine.change("PlayState")
+
 while running:
     events = pygame.event.get()
     dt = clock.tick()
