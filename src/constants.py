@@ -11,6 +11,9 @@ CANVAS_WIDTH = 480
 CANVAS_HEIGHT = 270
 
 
+#Speed at which the camera can move at
+CAMERA_SPEED = 100
+
 #Level width and height in Tiles
 LEVEL_WIDTH = 50
 LEVEL_HEIGHT = 50

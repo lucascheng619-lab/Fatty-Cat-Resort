@@ -9,6 +9,7 @@ canvas = pygame.Surface((CANVAS_WIDTH, CANVAS_HEIGHT))
 
 clock = pygame.time.Clock()
 
+
 #Toggles fullscreen
 pygame.display.toggle_fullscreen()
 
@@ -18,7 +19,8 @@ gStateMachine.change("PlayState")
 
 while running:
     events = pygame.event.get()
-    dt = clock.tick()
+    dt = clock.tick() / 1000
+    # divide delta time by 1000, so that it is in seconds which makes it easier for to code since Pygame measures dt in milleseconds and LOVE 2D measures dt in seconds
 
     for event in events:
         #if the 'X' button at the top of the button is pressed the game will stop
