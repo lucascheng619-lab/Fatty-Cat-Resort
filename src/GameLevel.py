@@ -7,7 +7,7 @@ class GameLevel:
         self.objects = objects
 
     def update(self, params):
-        self.tilemap.update()
+        self.tilemap.update(params)
 
         for entity in self.entities:
             entity.render({

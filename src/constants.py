@@ -10,9 +10,18 @@ SCREEN_HEIGHT = 1080
 CANVAS_WIDTH = 480
 CANVAS_HEIGHT = 270
 
+
+#Level width and height in Tiles
+LEVEL_WIDTH = 50
+LEVEL_HEIGHT = 50
+
 #Width of the tiles in the tilesheet
 
 TILE_WIDTH = 16
 #Height of the tiles in the tilesheet
 
 TILE_HEIGHT = 16
+
+#Plain grass tile
+PLAIN_GRASS_ID = 24
+

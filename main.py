@@ -25,6 +25,11 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
+        #checks if escape button is pressed
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                running = False
+
         
 
     gStateMachine.update({
