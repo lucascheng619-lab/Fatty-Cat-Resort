@@ -32,6 +32,9 @@ while running:
             if event.key == pygame.K_ESCAPE:
                 running = False
 
+    #fills the screen black so nothing from the last frame remains
+    canvas.fill((0, 0, 0))
+
         
 
     gStateMachine.update({

@@ -9,4 +9,4 @@ class Tile:
         self.y = y
 
     def render(self, params):
-        params["canvas"].blit(self.frame, (self.x, self.y))
+        params["canvas"].blit(self.frame, (self.x - params["xOffset"], self.y - params["yOffset"]))

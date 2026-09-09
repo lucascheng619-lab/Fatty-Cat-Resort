@@ -26,16 +26,10 @@ class GameLevel:
 
     def render(self, params):
         for tilemap in self.tilemaps:
-            tilemap.render({
-                "canvas":params["canvas"]
-            })
+            tilemap.render(params)
 
         for entity in self.entities:
-            entity.render({
-                "canvas":params["canvas"]
-            })
+            entity.render(params)
 
         for object in self.objects:
-            object.render({
-                "canvas":params["canvas"]
-            })
+            object.render(params)
