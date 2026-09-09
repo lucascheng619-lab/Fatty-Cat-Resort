@@ -50,8 +50,6 @@ class Camera:
         self.x = max(0, min(self.mapWidth - self.viewWidth, self.x))
         self.y = max(0, min(self.mapHeight - self.viewHeight, self.y))
 
-        print(self.x, self.y)
-
 
     def get_X_offset(self):
         return round(self.x)

@@ -4,11 +4,15 @@ from src.AssetManager import *
 from src.Tilemap import Tilemap
 from src.LevelGenerator import LevelGenerator
 from src.Camera import Camera
+from src.Cursor import Cursor
+from src.Focus import Focus
+import pygame
 
 
 
 class PlayState(BaseState):
     def __init__(self):
+
         self.levelGenerator = LevelGenerator
         self.level = GameLevel(
             tilemaps = [
@@ -22,6 +26,10 @@ class PlayState(BaseState):
             objects = []
         )
 
+        
+        self.cursor = Cursor(gTextures["cursor"],gTextures["cursor_shadow"])
+
+        self.focus = Focus(gTextures["tile_focus"])
 
         self.camera = Camera(self.level.tilemaps[0], CANVAS_WIDTH, CANVAS_HEIGHT, 0, 0)
 
@@ -36,12 +44,26 @@ class PlayState(BaseState):
             "dt":params["dt"],
         })
 
-        
-        
         self.level.update({
             "dt":params["dt"],
             "events":params["events"]
         })
+
+        self.cursor.update({
+            "dt":params["dt"],
+            "events":params["events"]
+        })
+
+        self.focus.update({
+            "dt":params["dt"],
+            "events":params["events"],
+            "cursorX":self.cursor.x,
+            "cursorY":self.cursor.y,
+            "cameraX":self.camera.get_X_offset(),
+            "cameraY":self.camera.get_Y_offset()
+        })
+
+        
 
     def render(self, params):
 
@@ -52,5 +74,17 @@ class PlayState(BaseState):
             "xOffset":self.camera.get_X_offset(),
             "yOffset":self.camera.get_Y_offset()
 
+        })
+
+        self.focus.render({
+                    "canvas":params["canvas"],
+                    "xOffset":self.camera.get_X_offset(),
+                    "yOffset":self.camera.get_Y_offset()
+                })
+
+        self.cursor.render({
+            "canvas":params["canvas"],
+            "xOffset":self.camera.get_X_offset(),
+            "yOffset":self.camera.get_Y_offset()
         })
 
