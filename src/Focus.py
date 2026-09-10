@@ -9,8 +9,8 @@ class Focus:
         self.y = 0
 
     def update(self, params):
-        self.tileX = (params["cursorX"] + params["cameraX"]) //TILE_WIDTH #makes the focus lock on to the nearest tile
-        self.tileY = (params["cursorY"] + params["cameraY"]) //TILE_HEIGHT
+        self.tileX = int((params["cursorX"] + params["cameraX"]) //TILE_WIDTH) #makes the focus lock on to the nearest tile
+        self.tileY = int((params["cursorY"] + params["cameraY"]) //TILE_HEIGHT)
 
         self.x = self.tileX * TILE_WIDTH
         self.y = self.tileY * TILE_HEIGHT

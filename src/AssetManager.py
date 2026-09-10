@@ -1,6 +1,8 @@
 
 import pygame
 
+pygame.init() #initialises pygame, so the pygame.Font works
+
 from src.constants import *
 
 from src.util import *
@@ -14,4 +16,8 @@ gTextures = {
 
 gFrames = {
     "tileset":generateTileSets(gTextures["tileset"], TILE_WIDTH, TILE_HEIGHT)
+}
+
+gFonts = {
+    "normal_font":pygame.font.Font("fonts/pixelFont.ttf", 11)
 }

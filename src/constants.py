@@ -28,3 +28,8 @@ TILE_HEIGHT = 16
 #Plain grass tile
 PLAIN_GRASS_ID = 24
 
+#Plain dirt tile
+PLAIN_DIRT_ID = 54
+
+FILLER_ID = 0
+

@@ -1,12 +1,23 @@
-
+from src.constants import *
 
 class Tile:
-    def __init__(self, texture, ID, x, y):
+    def __init__(self, texture, x, y, type):
         self.texture = texture
-        self.frame = texture[ID]
+
+        self.type = type
+
+        self.ID = None
+
+        
+        
 
         self.x = x
         self.y = y
+
+
+    def update(self, params):
+
+        self.frame = self.texture[self.ID]
         
 
     def render(self, params):

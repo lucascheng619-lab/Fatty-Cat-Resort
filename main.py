@@ -1,5 +1,6 @@
 import pygame
 from src.Globals import *
+from src.AssetManager import *
 
 #imports all the constants from the constants.py file
 from src.constants import *
@@ -16,6 +17,12 @@ pygame.display.toggle_fullscreen()
 running = True
 
 gStateMachine.change("PlayState")
+
+def show_FPS():
+    FPS = round(clock.get_fps())
+    surf = gFonts["normal_font"].render(f"FPS: {FPS}", False, (0, 255, 0)) # keep ani aliasing false, so that it looks cleaner since it is a pixel font
+    canvas.blit(surf, (10, 5))
+
 
 while running:
     events = pygame.event.get()
@@ -46,6 +53,8 @@ while running:
         "canvas":canvas
     })
 
+    show_FPS()
+
     #makes scaled canvas is the canvas that is scaled to the size of the screen so that it can still look big on screen
 
     scaled_canvas = pygame.transform.scale(canvas, (SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -53,6 +62,7 @@ while running:
     #put scaled canvas on the screen
 
     screen.blit(scaled_canvas, (0, 0))
+
 
 
     #updates the screen
