@@ -67,6 +67,56 @@ class Tilemap:
                     topLeft = None
                     topCentre = None
                     topRight = None
+
+                
+
+                if tile.type == "grass":
+                    if bottomCentre != None:
+                        if bottomCentre.type == "dirt":
+                            tile.ID = UPPER_DIRT_EDGE_ID
+
+                    if middleRight != None:
+                        if middleRight.type == "dirt":
+                            tile.ID = LEFT_DIRT_EDGE_ID
+
+                    if middleLeft != None:
+                        if middleLeft.type == "dirt":
+                            tile.ID = RIGHT_DIRT_EDGE_ID
+
+                    if topCentre != None:
+                        if topCentre.type == "dirt":
+                            tile.ID = BOTTOM_DIRT_EDGE_ID
+
+                    if topCentre != None and middleLeft != None: #checks if needs top left 
+                        if topCentre.type == "dirt" and middleLeft.type == "dirt":
+                            tile.ID = TOP_LEFT_DIRT_EDGE_ID
+
+                    if topCentre != None and middleRight != None:
+                        if topCentre.type == "dirt" and middleRight.type == "dirt":
+                            tile.ID = TOP_RIGHT_DIRT_EDGE_ID
+
+                    if bottomCentre != None and middleRight != None:
+                        if bottomCentre.type == "dirt" and middleRight.type == "dirt":
+                            tile.ID = BOTTOM_RIGHT_DIRT_EDGE_ID
+
+                    if bottomCentre != None and middleLeft != None:
+                                            if bottomCentre.type == "dirt" and middleLeft.type == "dirt":
+                                                tile.ID = BOTTOM_LEFT_DIRT_EDGE_ID
+
+
+                    #if the tile above is dirt and the tile below is dirt, make this tile also dirt
+                    if topCentre != None and bottomCentre != None:
+                        if topCentre.type == "dirt" and bottomCentre.type == "dirt":
+                            tile.type = "dirt"
+
+                    if middleRight != None and middleLeft != None:
+                        if middleRight.type == "dirt" and middleLeft.type == "dirt":
+                            tile.type = "dirt"
+
+                    
+
+                    
+
                 
 
 

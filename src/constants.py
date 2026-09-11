@@ -31,5 +31,32 @@ PLAIN_GRASS_ID = 24
 #Plain dirt tile
 PLAIN_DIRT_ID = 54
 
+
+#Upper edge of dirt path tile
+UPPER_DIRT_EDGE_ID = 109
+
+#Left edge of dirt path tile
+LEFT_DIRT_EDGE_ID = 131
+
+#Right edge of dirt path tile
+RIGHT_DIRT_EDGE_ID = 129
+
+#Bottom edge of dirt path tile
+BOTTOM_DIRT_EDGE_ID = 145
+
+#Top left dirt edge tile
+TOP_LEFT_DIRT_EDGE_ID = 111
+
+#Top right dirt edge
+TOP_RIGHT_DIRT_EDGE_ID = 113
+
+#Bottom right dirt edge
+BOTTOM_RIGHT_DIRT_EDGE_ID = 149
+
+#Bottom left dirt edge
+BOTTOM_LEFT_DIRT_EDGE_ID = 147
+
+
+
 FILLER_ID = 0
 
