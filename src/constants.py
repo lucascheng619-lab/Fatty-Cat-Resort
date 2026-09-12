@@ -56,6 +56,18 @@ BOTTOM_RIGHT_DIRT_EDGE_ID = 149
 #Bottom left dirt edge
 BOTTOM_LEFT_DIRT_EDGE_ID = 147
 
+#top left dirt corner
+TOP_LEFT_DIRT_CORNER_ID = 108
+
+#top right dirt corner
+TOP_RIGHT_DIRT_CORNER_ID = 110
+
+#bottom left dirt corner
+BOTTOM_LEFT_DIRT_CORNER_ID = 144
+
+#bottom right dirt corner
+BOTTOM_RIGHT_DIRT_CORNER_ID = 146
+
 
 
 FILLER_ID = 0

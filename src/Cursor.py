@@ -12,6 +12,10 @@ class Cursor:
         self.x = 0
         self.y = 0
         self.leftButtonPressed = False
+
+    def changeTexture(self, texture, shadowTexture):
+        self.texture = texture
+        self.shadowTexture = shadowTexture
         
 
     def update(self, params):
