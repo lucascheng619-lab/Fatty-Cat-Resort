@@ -6,9 +6,10 @@ class Tilemap:
         self.width = len(self.tilemap[0])
         self.height = len(self.tilemap)
 
-    def adjustDirtTiles(self):
+    def getAdjustedDirtTiles(self, tilemap):
+        adjustedTilemap = tilemap
 
-        for row in self.tilemap:
+        for row in adjustedTilemap:
             for tile in row:
                 
                 if tile.type == "grass":
@@ -18,20 +19,20 @@ class Tilemap:
                     tile.ID = PLAIN_DIRT_ID
 
         
-        for row in self.tilemap: #changes tile IDs depending on the types of surrounding 
+        for row in adjustedTilemap: #changes tile IDs depending on the types of surrounding 
             for tile in row:
-                y = self.tilemap.index(row)
+                y = adjustedTilemap.index(row)
                 x = row.index(tile)
 
                 if y != 0: #checks that it is not the top row, if it is top row assign none to topLeft, topCentre, topRight
-                    topCentre = self.tilemap[y - 1][x]
+                    topCentre = adjustedTilemap[y - 1][x]
                     if x != 0:
-                        topLeft = self.tilemap[y - 1][x - 1]
+                        topLeft = adjustedTilemap[y - 1][x - 1]
                     else:
                         topLeft = None
 
                     if x != self.width - 1:
-                        topRight = self.tilemap[y - 1][x + 1]
+                        topRight = adjustedTilemap[y - 1][x + 1]
                     else:
                         topRight = None
 
@@ -41,24 +42,24 @@ class Tilemap:
                     topRight = None
 
                 if x != 0:
-                    middleLeft = self.tilemap[y][x - 1]
+                    middleLeft = adjustedTilemap[y][x - 1]
                 else:
                     middleLeft = None
                 
                 if x != self.width - 1:
-                    middleRight = self.tilemap[y][x + 1]
+                    middleRight = adjustedTilemap[y][x + 1]
                 else:
                     middleRight = None
 
                 if y != self.width - 1: #checks that it is not the bottom row, if it is bottom row assign none to bottomLeft, bottomCentre, bottomRight
-                    bottomCentre = self.tilemap[y + 1][x]
+                    bottomCentre = adjustedTilemap[y + 1][x]
                     if x != 0:
-                        bottomLeft = self.tilemap[y + 1][x - 1]
+                        bottomLeft = adjustedTilemap[y + 1][x - 1]
                     else:
                         bottomLeft = None
                 
                     if x != self.width - 1:
-                        bottomRight = self.tilemap[y + 1][x + 1]
+                        bottomRight = adjustedTilemap[y + 1][x + 1]
                     else:
                         bottomRight = None
 
@@ -120,21 +121,21 @@ class Tilemap:
                         tile.ID = PLAIN_DIRT_ID
 
 
-        for row in self.tilemap: #changes tile IDs depending on the types of surrounding 
+        for row in adjustedTilemap: #changes tile IDs depending on the types of surrounding 
             for tile in row:
-                y = self.tilemap.index(row)
+                y = adjustedTilemap.index(row)
                 x = row.index(tile)
 
 
                 if y != 0: #checks that it is not the top row, if it is top row assign none to topLeft, topCentre, topRight
-                    topCentre = self.tilemap[y - 1][x]
+                    topCentre = adjustedTilemap[y - 1][x]
                     if x != 0:
-                        topLeft = self.tilemap[y - 1][x - 1]
+                        topLeft = adjustedTilemap[y - 1][x - 1]
                     else:
                         topLeft = None
 
                     if x != self.width - 1:
-                        topRight = self.tilemap[y - 1][x + 1]
+                        topRight = adjustedTilemap[y - 1][x + 1]
                     else:
                         topRight = None
 
@@ -144,24 +145,24 @@ class Tilemap:
                     topRight = None
 
                 if x != 0: #checks the middle row
-                    middleLeft = self.tilemap[y][x - 1]
+                    middleLeft = adjustedTilemap[y][x - 1]
                 else:
                     middleLeft = None
                 
                 if x != self.width - 1:
-                    middleRight = self.tilemap[y][x + 1]
+                    middleRight = adjustedTilemap[y][x + 1]
                 else:
                     middleRight = None
 
                 if y != self.width - 1: #checks that it is not the bottom row, if it is bottom row assign none to bottomLeft, bottomCentre, bottomRight
-                    bottomCentre = self.tilemap[y + 1][x]
+                    bottomCentre = adjustedTilemap[y + 1][x]
                     if x != 0:
-                        bottomLeft = self.tilemap[y + 1][x - 1]
+                        bottomLeft = adjustedTilemap[y + 1][x - 1]
                     else:
                         bottomLeft = None
                 
                     if x != self.width - 1:
-                        bottomRight = self.tilemap[y + 1][x + 1]
+                        bottomRight = adjustedTilemap[y + 1][x + 1]
                     else:
                         bottomRight = None
 
@@ -204,10 +205,12 @@ class Tilemap:
                         if bottomCentre.ID == PLAIN_DIRT_ID and middleLeft.ID == PLAIN_DIRT_ID:
                             tile.ID = BOTTOM_LEFT_DIRT_EDGE_ID
 
+        return adjustedTilemap
+
 
 
     def update(self, params):
-        self.adjustDirtTiles()
+        self.tilemap = self.getAdjustedDirtTiles(self.tilemap)
         for row in self.tilemap:
             for tile in row:
                 tile.update(params)
