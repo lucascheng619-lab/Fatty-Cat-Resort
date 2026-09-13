@@ -5,6 +5,36 @@ class Tilemap:
         self.tilemap = tilemap
         self.width = len(self.tilemap[0])
         self.height = len(self.tilemap)
+        self.visibleTilemap = []
+
+    def getVisibleTilemap(self, tilemap, xOffset, yOffset):
+        visibleTilemap = []
+
+        
+        self.visibleColomns = CANVAS_WIDTH // TILE_WIDTH + 2#x columns visible
+        self.visibleRows = CANVAS_HEIGHT // TILE_HEIGHT + 2#y colomns visible
+        self.firstVisibleColomn = min(xOffset // TILE_WIDTH, self.width - self.visibleColomns)
+        self.firstVisibleRow = min(yOffset // TILE_HEIGHT, self.height - self.visibleRows)
+
+        if self.firstVisibleColomn > self.width - self.visibleColomns:
+            print("i am gay")
+
+
+        y = 0
+
+
+        for row in tilemap[self.firstVisibleRow:self.firstVisibleRow + self.visibleRows]:
+            visibleTilemap.append([])
+            
+            for column in range(len(row[self.firstVisibleColomn:self.firstVisibleColomn + self.visibleColomns])):
+                visibleTilemap[y].append(tilemap[y + self.firstVisibleRow][column + self.firstVisibleColomn])
+            
+
+            y += 1
+
+        
+
+        return visibleTilemap
 
     def getAdjustedDirtTiles(self, tilemap):
         adjustedTilemap = tilemap
@@ -31,7 +61,7 @@ class Tilemap:
                     else:
                         topLeft = None
 
-                    if x != self.width - 1:
+                    if x != self.visibleColomns - 1:
                         topRight = adjustedTilemap[y - 1][x + 1]
                     else:
                         topRight = None
@@ -46,19 +76,19 @@ class Tilemap:
                 else:
                     middleLeft = None
                 
-                if x != self.width - 1:
+                if x != self.visibleColomns - 1:
                     middleRight = adjustedTilemap[y][x + 1]
                 else:
                     middleRight = None
 
-                if y != self.width - 1: #checks that it is not the bottom row, if it is bottom row assign none to bottomLeft, bottomCentre, bottomRight
+                if y != self.visibleRows - 1: #checks that it is not the bottom row, if it is bottom row assign none to bottomLeft, bottomCentre, bottomRight
                     bottomCentre = adjustedTilemap[y + 1][x]
                     if x != 0:
                         bottomLeft = adjustedTilemap[y + 1][x - 1]
                     else:
                         bottomLeft = None
                 
-                    if x != self.width - 1:
+                    if x != self.visibleColomns - 1:
                         bottomRight = adjustedTilemap[y + 1][x + 1]
                     else:
                         bottomRight = None
@@ -115,9 +145,9 @@ class Tilemap:
                                 tile.ID = BOTTOM_RIGHT_DIRT_CORNER_ID
 
                     
-                    if x == 0 or x == self.width - 1:
+                    if x == 0 or x == self.visibleColomns - 1:
                         tile.ID = PLAIN_DIRT_ID
-                    if y == 0 or y == self.height - 1:
+                    if y == 0 or y == self.visibleRows - 1:
                         tile.ID = PLAIN_DIRT_ID
 
 
@@ -134,7 +164,7 @@ class Tilemap:
                     else:
                         topLeft = None
 
-                    if x != self.width - 1:
+                    if x != self.visibleColomns - 1:
                         topRight = adjustedTilemap[y - 1][x + 1]
                     else:
                         topRight = None
@@ -149,19 +179,19 @@ class Tilemap:
                 else:
                     middleLeft = None
                 
-                if x != self.width - 1:
+                if x != self.visibleColomns - 1:
                     middleRight = adjustedTilemap[y][x + 1]
                 else:
                     middleRight = None
 
-                if y != self.width - 1: #checks that it is not the bottom row, if it is bottom row assign none to bottomLeft, bottomCentre, bottomRight
+                if y != self.visibleRows - 1: #checks that it is not the bottom row, if it is bottom row assign none to bottomLeft, bottomCentre, bottomRight
                     bottomCentre = adjustedTilemap[y + 1][x]
                     if x != 0:
                         bottomLeft = adjustedTilemap[y + 1][x - 1]
                     else:
                         bottomLeft = None
                 
-                    if x != self.width - 1:
+                    if x != self.visibleColomns - 1:
                         bottomRight = adjustedTilemap[y + 1][x + 1]
                     else:
                         bottomRight = None
@@ -210,14 +240,15 @@ class Tilemap:
 
 
     def update(self, params):
-        self.tilemap = self.getAdjustedDirtTiles(self.tilemap)
-        for row in self.tilemap:
+        self.visibleTilemap = self.getVisibleTilemap(self.tilemap, params["xOffset"], params["yOffset"])
+        self.visibleTilemap = self.getAdjustedDirtTiles(self.visibleTilemap)
+        for row in self.visibleTilemap:
             for tile in row:
                 tile.update(params)
 
 
     def render(self, params):
-        for row in self.tilemap:
+        for row in self.visibleTilemap:
             for tile in row:
                 tile.render(params)
 

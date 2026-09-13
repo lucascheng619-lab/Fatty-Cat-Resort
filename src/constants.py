@@ -15,8 +15,8 @@ CANVAS_HEIGHT = 270
 CAMERA_SPEED = 100
 
 #Level width and height in Tiles
-LEVEL_WIDTH = 50
-LEVEL_HEIGHT = 50
+LEVEL_WIDTH = 100
+LEVEL_HEIGHT = 100
 
 #Width of the tiles in the tilesheet
 

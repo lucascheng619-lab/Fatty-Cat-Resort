@@ -64,7 +64,10 @@ class PlayState(BaseState):
 
         self.level.update({
             "dt":params["dt"],
-            "events":params["events"]
+            "events":params["events"],
+            "xOffset":self.camera.get_X_offset(),
+            "yOffset":self.camera.get_Y_offset()    
+            
         })
 
         

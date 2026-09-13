@@ -8,17 +8,23 @@ class GameLevel:
 
     def update(self, params):
         for tilemap in self.tilemaps:
-            tilemap.update(params)
+            tilemap.update({
+                "dt":params["dt"],
+                "events":params["events"],
+                "xOffset":params["xOffset"],
+                "yOffset":params["yOffset"]
+                })
+
 
         for entity in self.entities:
-            entity.render({
+            entity.update({
                 "dt":params["dt"],
                 "events":params["events"],
                 "map":self.tilemap[0] #should be changed later
             })
 
         for object in self.objects:
-            object.render({
+            object.update({
                 "dt":params["dt"],
                 "events":params["events"],
                 "map":self.tilemap[0] #should be changed later
