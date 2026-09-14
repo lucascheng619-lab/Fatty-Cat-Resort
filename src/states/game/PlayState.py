@@ -7,6 +7,8 @@ from src.Camera import Camera
 from src.Cursor import Cursor
 from src.Focus import Focus
 from src.TerrainEditor import TerrainEditor
+
+from src.Editor import Editor
 import pygame
 
 
@@ -27,14 +29,26 @@ class PlayState(BaseState):
             objects = []
         )
 
-        
         self.cursor = Cursor(gTextures["cursor"],gTextures["cursor_shadow"])
 
-        self.terrainEditor = TerrainEditor(Focus(gTextures["tile_focus"]), self.level.tilemaps[0]) #tilemap 0 means its editing the lowest tilemap which is the terrain
+
+        self.editor = Editor({
+            "terrain":lambda:TerrainEditor()
+        })
+        
+        self.editor.changeEditor("terrain",{
+            "focus":Focus(gTextures["tile_focus"]),
+            "tilemap":self.level.tilemaps[0]
+        })
+
+        self.editor.changeBrush("dirt")
+
+
 
         self.camera = Camera(self.level.tilemaps[0], CANVAS_WIDTH, CANVAS_HEIGHT, 0, 0)
 
-        self.terrainEditor.changeBrush("dirt")
+        self.editor.changeBrush("dirt")
+
 
 
 
@@ -53,7 +67,7 @@ class PlayState(BaseState):
             "events":params["events"]
         })
 
-        self.terrainEditor.update({
+        self.editor.update({
             "dt":params["dt"],
             "events":params["events"],
             "cursorX":self.cursor.x,
@@ -83,7 +97,7 @@ class PlayState(BaseState):
 
         })
 
-        self.terrainEditor.render({
+        self.editor.render({
             "canvas":params["canvas"],
             "xOffset":self.camera.get_X_offset(),
             "yOffset":self.camera.get_Y_offset()

@@ -1,10 +1,15 @@
 import pygame
 
 class TerrainEditor:
-    def __init__(self, focus, tilemap):
+    def __init__(self):
         self.currentBrush = None
-        self.focus = focus
-        self.tilemap = tilemap
+
+    def enter(self, params):
+        self.focus = params["focus"]
+        self.tilemap = params["tilemap"]
+
+    def exit(self):
+        pass
 
     def update(self, params):
         self.focus.update(params)
