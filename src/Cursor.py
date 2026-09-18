@@ -5,21 +5,20 @@ import pygame
 from src.constants import *
 
 class Cursor:
-    def __init__(self, texture, shadowTexture):
+    def __init__(self):
         pygame.mouse.set_visible(False)
-        self.texture = texture
-        self.shadowTexture = shadowTexture
+
         self.x = 0
         self.y = 0
         self.leftButtonPressed = False
 
-    def changeTexture(self, texture, shadowTexture):
-        self.texture = texture
-        self.shadowTexture = shadowTexture
         
 
     def update(self, params):
         #pygame.mouse.get_pos() return x and y values
+
+        self.texture = params["editor"].cursorTexture
+        self.shadowTexture = params["editor"].cursorShadowTexture
         
         self.leftButtonPressed = False
 
@@ -27,8 +26,8 @@ class Cursor:
             self.leftButtonPressed = True
 
 
-        self.x = pygame.mouse.get_pos()[0] / (SCREEN_WIDTH / CANVAS_WIDTH) #gets x position of mouse
-        self.y = pygame.mouse.get_pos()[1] / (SCREEN_HEIGHT / CANVAS_HEIGHT)#gets y position of mouse
+        self.x = pygame.mouse.get_pos()[0] / (SCREEN_WIDTH / CANVAS_WIDTH) #gets x position of mouse in regard to canvas
+        self.y = pygame.mouse.get_pos()[1] / (SCREEN_HEIGHT / CANVAS_HEIGHT)#gets y position of mouse in regard to canvas
 
     def render(self, params):
         self.shadowTexture.set_alpha(100)

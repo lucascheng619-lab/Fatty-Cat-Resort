@@ -11,13 +11,11 @@ class Tilemap:
         visibleTilemap = []
 
         
-        self.visibleColomns = CANVAS_WIDTH // TILE_WIDTH + 2#x columns visible
-        self.visibleRows = CANVAS_HEIGHT // TILE_HEIGHT + 2#y colomns visible
-        self.firstVisibleColomn = min(xOffset // TILE_WIDTH, self.width - self.visibleColomns)
-        self.firstVisibleRow = min(yOffset // TILE_HEIGHT, self.height - self.visibleRows)
+        self.visibleColomns = CANVAS_WIDTH // TILE_WIDTH + 4#x columns visible
+        self.visibleRows = CANVAS_HEIGHT // TILE_HEIGHT + 4#y colomns visible
+        self.firstVisibleColomn = max(0,min(xOffset // TILE_WIDTH, self.width - self.visibleColomns)-2)
+        self.firstVisibleRow = max(0, min(yOffset // TILE_HEIGHT, self.height - self.visibleRows)-2)
 
-        if self.firstVisibleColomn > self.width - self.visibleColomns:
-            print("i am gay")
 
 
         y = 0

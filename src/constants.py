@@ -12,7 +12,7 @@ CANVAS_HEIGHT = 270
 
 
 #Speed at which the camera can move at
-CAMERA_SPEED = 100
+CAMERA_SPEED = 200
 
 #Level width and height in Tiles
 LEVEL_WIDTH = 100
