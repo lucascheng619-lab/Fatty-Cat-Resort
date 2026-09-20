@@ -26,7 +26,7 @@ class Editor:
         self.currentEditor.currentBrush = brush
 
     def update(self, params):
-        self.currentEditor.enabled = True
+        self.currentEditor.enabled = True #always set this to true before the editor is updated, so that it always resets, if the editor is updated first then it won't detect if button on the editor are being hovered on
 
 
         for element in self.gui.elements:

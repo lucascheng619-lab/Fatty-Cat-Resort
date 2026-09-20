@@ -1,19 +1,18 @@
 
 
 class GameLevel:
-    def __init__(self, tilemaps, entities, objects):
-        self.tilemaps = tilemaps
+    def __init__(self, tilemap, entities, objects):
+        self.tilemap = tilemap
         self.entities = entities
         self.objects = objects
 
     def update(self, params):
-        for tilemap in self.tilemaps:
-            tilemap.update({
-                "dt":params["dt"],
-                "events":params["events"],
-                "xOffset":params["xOffset"],
-                "yOffset":params["yOffset"]
-                })
+        self.tilemap.update({
+            "dt":params["dt"],
+            "events":params["events"],
+            "xOffset":params["xOffset"],
+            "yOffset":params["yOffset"]
+            })
 
 
         for entity in self.entities:
@@ -31,8 +30,7 @@ class GameLevel:
             })
 
     def render(self, params):
-        for tilemap in self.tilemaps:
-            tilemap.render(params)
+        self.tilemap.render(params)
 
         for entity in self.entities:
             entity.render(params)

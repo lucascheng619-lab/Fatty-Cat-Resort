@@ -24,13 +24,13 @@ class PlayState(BaseState):
 
         self.levelGenerator = LevelGenerator
         self.level = GameLevel(
-            tilemaps = [
+            tilemap = 
                 Tilemap(self.levelGenerator.generate_empty_grassland(
                 tileset=gFrames["tileset"],
                 width=LEVEL_WIDTH,
                 height=LEVEL_HEIGHT
             )
-            )],
+            ),
             entities = [],
             objects = []
         )
@@ -59,7 +59,7 @@ class PlayState(BaseState):
 
 
 
-        self.camera = Camera(self.level.tilemaps[0], CANVAS_WIDTH, CANVAS_HEIGHT, 0, 0)
+        self.camera = Camera(self.level.tilemap, CANVAS_WIDTH, CANVAS_HEIGHT, 0, 0)
 
         self.editor.changeBrush("dirt")
 

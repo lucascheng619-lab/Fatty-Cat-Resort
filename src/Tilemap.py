@@ -11,10 +11,10 @@ class Tilemap:
         visibleTilemap = []
 
         
-        self.visibleColomns = CANVAS_WIDTH // TILE_WIDTH + 4#x columns visible
-        self.visibleRows = CANVAS_HEIGHT // TILE_HEIGHT + 4#y colomns visible
-        self.firstVisibleColomn = max(0,min(xOffset // TILE_WIDTH, self.width - self.visibleColomns)-2)
-        self.firstVisibleRow = max(0, min(yOffset // TILE_HEIGHT, self.height - self.visibleRows)-2)
+        self.visibleColomns = CANVAS_WIDTH // TILE_WIDTH +4#x columns visible + adds 4 extra colomns 2 infront 2 behind
+        self.visibleRows = CANVAS_HEIGHT // TILE_HEIGHT +4#y colomns visible + adds 4 extra rows 2 
+        self.firstVisibleColomn = max(0,min(xOffset // TILE_WIDTH - 2, self.width - self.visibleColomns)) #shifts first visible rows backwards by two so that the actually first rows we can see are in front of those first rows being updated
+        self.firstVisibleRow = max(0, min(yOffset // TILE_HEIGHT - 2, self.height - self.visibleRows))#shift 
 
 
 
@@ -176,7 +176,6 @@ class Tilemap:
                     middleLeft = adjustedTilemap[y][x - 1]
                 else:
                     middleLeft = None
-                
                 if x != self.visibleColomns - 1:
                     middleRight = adjustedTilemap[y][x + 1]
                 else:
