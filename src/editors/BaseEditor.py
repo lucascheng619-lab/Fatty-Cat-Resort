@@ -11,7 +11,7 @@ class BaseEditor:
         pass
 
     def changeBrush(self, brush):
-        pass
+        self.currentBrush = brush
 
     def update(self, params):
         pass

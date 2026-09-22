@@ -35,7 +35,7 @@ class Editor:
             if element.checkHovering(params): #if the cursor is hovering above any gui disable the editor functionality
                 self.currentEditor.enabled = False
             
-            if element.ID == "select_editor_button":
+            if element.ID == "select_editor_button": #select editor button
                 element.pressed = False
 
                 if element.checkPressed(params):#checks if the select editor button is being pressed
@@ -47,7 +47,7 @@ class Editor:
                 
                 
 
-            if element.ID == "terrain_editor_button": 
+            if element.ID == "terrain_editor_button": #terrain editor button
                 element.pressed = False
 
                 if element.checkPressed(params):#checks if the terrain editor button is being pressed
@@ -58,7 +58,20 @@ class Editor:
                     
                 if self.currentEditor.ID == "terrain_editor":
                     element.pressed = True
-                            
+
+            if element.ID == "accommodation_editor_button": #accommodation editor button
+                element.pressed = False
+
+                if element.checkPressed(params):#checks if the terrain editor button is being pressed
+                                                
+                    self.changeEditor("accommodation")
+                    self.changeBrush("cardboard_box")
+
+                    
+
+                    
+                if self.currentEditor.ID == "accommodation_editor":
+                    element.pressed = True
                 
         
 

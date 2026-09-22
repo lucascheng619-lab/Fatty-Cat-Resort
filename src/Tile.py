@@ -3,6 +3,8 @@ from src.constants import *
 class Tile:
     def __init__(self, texture, x, y, type):
         self.texture = texture
+        self.editable = True
+        self.occupied = False
 
         self.type = type
 
@@ -16,6 +18,8 @@ class Tile:
 
 
     def update(self, params):
+
+
 
         self.frame = self.texture[self.ID]
         

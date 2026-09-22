@@ -19,14 +19,14 @@ class GameLevel:
             entity.update({
                 "dt":params["dt"],
                 "events":params["events"],
-                "map":self.tilemap[0] #should be changed later
+                "map":self.tilemap
             })
 
         for object in self.objects:
             object.update({
                 "dt":params["dt"],
                 "events":params["events"],
-                "map":self.tilemap[0] #should be changed later
+                "map":self.tilemap
             })
 
     def render(self, params):

@@ -70,73 +70,71 @@ class TerrainEditor(BaseEditor):
 
 
         if pygame.mouse.get_pressed()[0] and self.enabled: #checks if the left click button is being pressed
-            tilemap[self.focus.tileY][self.focus.tileX].type = self.currentBrush
-            if self.currentBrush == "grass":
-                y = self.focus.tileY
-                x = self.focus.tileX
+            if tilemap[self.focus.tileY][self.focus.tileX].editable:
+                tilemap[self.focus.tileY][self.focus.tileX].type = self.currentBrush
+                if self.currentBrush == "grass":
+                    y = self.focus.tileY
+                    x = self.focus.tileX
 
-                if y != 0: #checks that it is not the top row, if it is top row assign none to topLeft, topCentre, topRight
-                    topCentre = tilemap[y - 1][x]
-                    if x != 0:
-                        topLeft = tilemap[y - 1][x - 1]
+                    if y != 0: #checks that it is not the top row, if it is top row assign none to topLeft, topCentre, topRight
+                        topCentre = tilemap[y - 1][x]
+                        if x != 0:
+                            topLeft = tilemap[y - 1][x - 1]
+                        else:
+                            topLeft = None
+
+                        if x != LEVEL_WIDTH:
+                            topRight = tilemap[y - 1][x + 1]
+                        else:
+                            topRight = None
+
                     else:
                         topLeft = None
-
-                    if x != LEVEL_WIDTH:
-                        topRight = tilemap[y - 1][x + 1]
-                    else:
+                        topCentre = None
                         topRight = None
 
-                else:
-                    topLeft = None
-                    topCentre = None
-                    topRight = None
-
-                if x != 0:
-                    middleLeft = tilemap[y][x - 1]
-                else:
-                    middleLeft = None
-
-        
-                
-                if x != LEVEL_WIDTH - 1:
-                    middleRight = tilemap[y][x + 1]
-                else:
-                    middleRight = None
-
-                if y != LEVEL_HEIGHT - 1: #checks that it is not the bottom row, if it is bottom row assign none to bottomLeft, bottomCentre, bottomRight
-                    bottomCentre = tilemap[y + 1][x]
                     if x != 0:
-                        bottomLeft = tilemap[y + 1][x - 1]
+                        middleLeft = tilemap[y][x - 1]
+                    else:
+                        middleLeft = None
+
+            
+                    
+                    if x != LEVEL_WIDTH - 1:
+                        middleRight = tilemap[y][x + 1]
+                    else:
+                        middleRight = None
+
+                    if y != LEVEL_HEIGHT - 1: #checks that it is not the bottom row, if it is bottom row assign none to bottomLeft, bottomCentre, bottomRight
+                        bottomCentre = tilemap[y + 1][x]
+                        if x != 0:
+                            bottomLeft = tilemap[y + 1][x - 1]
+                        else:
+                            bottomLeft = None
+                    
+                        if x != LEVEL_HEIGHT:
+                            bottomRight = tilemap[y + 1][x + 1]
+                        else:
+                            bottomRight = None
+
                     else:
                         bottomLeft = None
-                
-                    if x != LEVEL_HEIGHT:
-                        bottomRight = tilemap[y + 1][x + 1]
-                    else:
+                        bottomCentre = None
                         bottomRight = None
 
-                else:
-                    bottomLeft = None
-                    bottomCentre = None
-                    bottomRight = None
+                    surroundingTiles = [topLeft, topCentre, topRight, middleLeft, middleRight, bottomLeft, bottomCentre, bottomRight]
 
-                surroundingTiles = [topLeft, topCentre, topRight, middleLeft, middleRight, bottomLeft, bottomCentre, bottomRight]
+                    if middleLeft != None and middleRight != None:
+                        if middleLeft.type == "dirt" and middleRight.type == "dirt":
+                            for tile in surroundingTiles:
+                                if tile != None:
+                                    tile.type = "grass"
 
-                if middleLeft != None and middleRight != None:
-                    if middleLeft.type == "dirt" and middleRight.type == "dirt":
-                        for tile in surroundingTiles:
-                            if tile != None:
-                                tile.type = "grass"
-
-                if topCentre != None and bottomCentre != None:
-                    if topCentre.type == "dirt" and bottomCentre.type == "dirt":
-                        for tile in surroundingTiles:
-                            if tile != None:
-                                tile.type = "grass"
-
-
-
+                    if topCentre != None and bottomCentre != None:
+                        if topCentre.type == "dirt" and bottomCentre.type == "dirt":
+                            for tile in surroundingTiles:
+                                if tile != None:
+                                    tile.type = "grass"
 
 
         self.gui.update(params)
