@@ -17,13 +17,14 @@ class Animation:
             if self.currentFrame >= len(self.frames): #loop back if it overflows
                 self.currentFrame = 0
 
+
             
 
 
 
     def getFrame(self):
-        if self.currentFrame >= len(self.frames): #loop back if it overflows
-            self.currentFrame = 0
+        
+        
 
         return self.frames[self.currentFrame]
     
