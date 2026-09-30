@@ -15,8 +15,8 @@ CANVAS_HEIGHT = 270
 CAMERA_SPEED = 200
 
 #Level width and height in Tiles
-LEVEL_WIDTH = 100
-LEVEL_HEIGHT = 100
+LEVEL_WIDTH = 50
+LEVEL_HEIGHT = 50
 
 #Width of the tiles in the tilesheet
 
@@ -25,11 +25,18 @@ TILE_WIDTH = 16
 
 TILE_HEIGHT = 16
 
+
+
+
 #Plain grass tile
 PLAIN_GRASS_ID = 24
 
 #Plain dirt tile
 PLAIN_DIRT_ID = 54
+
+WATER_ID = 234
+
+EMPTY_ID = 216
 
 
 #Upper edge of dirt path tile
@@ -68,6 +75,22 @@ BOTTOM_LEFT_DIRT_CORNER_ID = 144
 #bottom right dirt corner
 BOTTOM_RIGHT_DIRT_CORNER_ID = 146
 
+
+#Cliff Tiles
+TOP_LEFT_CLIFF_CORNER_ID = 0
+
+UPPER_CLIFF_EDGE_ID = 1
+
+TOP_RIGHT_CLIFF_CORNER_ID = 3
+
+LEFT_CLIFF_EDGE_ID = 18
+
+RIGHT_CLIFF_EDGE_ID = 21
+
+
+#animated submerged Cliff Edge
+
+SUBMERGED_BOTTOM_CLIFF_EDGE_ID = 242 
 
 
 FILLER_ID = 0

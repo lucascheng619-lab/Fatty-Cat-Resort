@@ -11,4 +11,5 @@ class GameObject:
         pass
 
     def render(self, params):
+        self.texture.set_alpha(255)
         params["canvas"].blit(self.texture, (self.x - params["xOffset"], self.y - params["yOffset"]))

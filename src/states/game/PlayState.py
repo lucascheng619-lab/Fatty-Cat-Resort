@@ -29,7 +29,7 @@ class PlayState(BaseState):
         self.levelGenerator = LevelGenerator
         self.level = GameLevel(
             tilemap = 
-                Tilemap(self.levelGenerator.generate_empty_grassland(
+                Tilemap(self.levelGenerator.generate_empty_island(
                 tileset=gFrames["tileset"],
                 width=LEVEL_WIDTH,
                 height=LEVEL_HEIGHT
@@ -46,6 +46,9 @@ class PlayState(BaseState):
             Button("accommodation_editor_button", 10, 80, gTextures["accommodation_editor_button"], gTextures["accommodation_editor_button_selected"]) #accommodation editor button
 
             ])
+
+
+        
 
         
         self.cursor = Cursor()

@@ -34,7 +34,7 @@ class AccommodationEditor(BaseEditor):
         #checks if any of the tiles the accommodation is going to placed is already occupied
         for y in range(buildingTileHeight):
             for x in range(buildingTileWidth):
-                if self.level.tilemap.tilemap[tileY + y][tileX + x].occupied:
+                if self.level.tilemap.tilemap[tileY + y][tileX + x].occupied or not self.level.tilemap.tilemap[tileY + y][tileX + x].editable:
                     return False
 
 
@@ -73,7 +73,18 @@ class AccommodationEditor(BaseEditor):
 
         else:
             self.focus.texture = gTextures["32x32_building_red_focus"]
+
+        self.highlight = CardboardBox(
+            self.focus.tileX * TILE_WIDTH,
+            self.focus.tileY * TILE_HEIGHT
+        )
+        
+        
                     
 
     def render(self, params):
         self.focus.render(params)
+
+
+        self.highlight.texture.set_alpha(128)
+        params["canvas"].blit(self.highlight.texture, (self.highlight.x - params["xOffset"] , self.highlight.y - params["yOffset"]))

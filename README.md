@@ -2,6 +2,8 @@
 
 Tile sheet credits go to: o_lobster https://o-lobster.itch.io/
 
+Used Tile Sheet numberer that numbered the tiles on my tilesheet that was made by COLTON OGDEN
+
 Update v0.1
 Made tile map with a customer cursor and tile selector. Also made made the camera move by taking in keyboard input.
 
@@ -11,15 +13,10 @@ Made simple tile map editing with dirt trails. The edges and corners automatical
 Update v0.3
 Made basic GUI that allow you to change the editor you are currently using and when in the editor you can also change the brush of the editor. Fixed many bugs that came with the last update.
 
-
-- Added brushes
-- Added brush icon
-- Introduced GUI clawss
-- Introduced Toggle Button Element
-- introduced terrain and select button
-- introduced selecting what brush
-- Fixed Grass editing so that if I plant grass in the middle of dirt the surrounding dirt will also be grass
-
+TODO LIST
+- finish the borders
+- make player_Manager to manage the player aspect of the game like money, buildings and that kind of stuff
+- make the select editor be able to select and delete game objects
 
 NAMING
 - Classes in capitals

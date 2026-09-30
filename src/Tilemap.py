@@ -1,4 +1,6 @@
 from src.constants import *
+from src.LevelGenerator import LevelGenerator
+from src.AssetManager import *
 
 class Tilemap:
     def __init__(self, tilemap):
@@ -6,6 +8,42 @@ class Tilemap:
         self.width = len(self.tilemap[0])
         self.height = len(self.tilemap)
         self.visibleTilemap = []
+        self.visibleWaterTilemap = []
+
+        self.levelGenerator = LevelGenerator
+        self.waterTilemap = self.levelGenerator.generate_water(gFrames["tileset"], self.width, self.height)
+
+    def getSurroundingTiles(self, tileX, tileY, tilemap):
+        surroundingTiles = {}
+        if tileY != 0: #checks that it is not the top row, if it is top row assign none to topLeft, topCentre, topRight
+            surroundingTiles["topCentre"] = tilemap[tileY - 1][tileX]
+            if tileX != 0:
+                surroundingTiles["topLeft"] = tilemap[tileY - 1][tileX - 1]
+
+            if tileX != self.visibleColomns - 1:
+                surroundingTiles["topRight"] = tilemap[tileY - 1][tileX + 1]
+
+        if tileX != 0:
+            surroundingTiles["middleLeft"] = tilemap[tileY][tileX - 1]
+
+        
+        if tileX != self.visibleColomns - 1:
+            surroundingTiles["middleRight"] = tilemap[tileY][tileX + 1]
+
+
+        if tileY != self.visibleRows - 1: #checks that it is not the bottom row, if it is bottom row assign none to bottomLeft, bottomCentre, bottomRight
+            surroundingTiles["bottomCentre"] = tilemap[tileY + 1][tileX]
+            if tileX != 0:
+                surroundingTiles["bottomLeft"] = tilemap[tileY + 1][tileX - 1]
+
+        
+            if tileX != self.visibleColomns - 1:
+                surroundingTiles["bottomRight"] = tilemap[tileY + 1][tileX + 1]
+
+
+        return surroundingTiles
+
+
 
     def getVisibleTilemap(self, tilemap, xOffset, yOffset):
         visibleTilemap = []
@@ -34,7 +72,52 @@ class Tilemap:
 
         return visibleTilemap
 
-    def getAdjustedDirtTiles(self, tilemap):
+
+    def adjustWaterTiles(self, tilemap):
+        adjustedTilemap = tilemap
+        for row in adjustedTilemap:
+            for tile in row:
+                y = adjustedTilemap.index(row)
+                x = row.index(tile)
+                
+                surroundingTiles = self.getSurroundingTiles(x, y, adjustedTilemap)
+                if tile.type == "grass":
+                    if "middleRight" in surroundingTiles:
+                        if surroundingTiles["middleRight"].type == "water":
+                            tile.ID = RIGHT_CLIFF_EDGE_ID
+                            tile.editable = False
+
+                    if "middleLeft" in surroundingTiles:
+                        if surroundingTiles["middleLeft"].type == "water":
+                            tile.ID = LEFT_CLIFF_EDGE_ID
+                            tile.editable = False
+
+                    if "topCentre" in surroundingTiles:
+                        if surroundingTiles["topCentre"].type == "water":
+                            tile.ID = UPPER_CLIFF_EDGE_ID
+                            tile.editable = False
+
+                    if "bottomCentre" in surroundingTiles:
+                        if surroundingTiles["bottomCentre"].type == "water":
+                            tile.ID = SUBMERGED_BOTTOM_CLIFF_EDGE_ID
+                            tile.editable = False
+
+
+                    if "topCentre" in surroundingTiles and "middleLeft" in surroundingTiles: #checks if needs top left 
+                        if surroundingTiles["topCentre"].type == "water" and surroundingTiles["middleLeft"].type == "water":
+                            tile.ID = TOP_LEFT_CLIFF_CORNER_ID
+                            tile.editable = False
+
+                    if "topCentre" in surroundingTiles and "middleRight" in surroundingTiles:
+                        if surroundingTiles["topCentre"].type == "water" and surroundingTiles["middleRight"].type == "water":
+                            tile.ID = TOP_RIGHT_CLIFF_CORNER_ID
+                            tile.editable = False
+
+        return adjustedTilemap
+
+                
+
+    def adjustDirtTiles(self, tilemap):
         adjustedTilemap = tilemap
 
         for row in adjustedTilemap:
@@ -52,92 +135,50 @@ class Tilemap:
                 y = adjustedTilemap.index(row)
                 x = row.index(tile)
 
-                if y != 0: #checks that it is not the top row, if it is top row assign none to topLeft, topCentre, topRight
-                    topCentre = adjustedTilemap[y - 1][x]
-                    if x != 0:
-                        topLeft = adjustedTilemap[y - 1][x - 1]
-                    else:
-                        topLeft = None
-
-                    if x != self.visibleColomns - 1:
-                        topRight = adjustedTilemap[y - 1][x + 1]
-                    else:
-                        topRight = None
-
-                else:
-                    topLeft = None
-                    topCentre = None
-                    topRight = None
-
-                if x != 0:
-                    middleLeft = adjustedTilemap[y][x - 1]
-                else:
-                    middleLeft = None
-                
-                if x != self.visibleColomns - 1:
-                    middleRight = adjustedTilemap[y][x + 1]
-                else:
-                    middleRight = None
-
-                if y != self.visibleRows - 1: #checks that it is not the bottom row, if it is bottom row assign none to bottomLeft, bottomCentre, bottomRight
-                    bottomCentre = adjustedTilemap[y + 1][x]
-                    if x != 0:
-                        bottomLeft = adjustedTilemap[y + 1][x - 1]
-                    else:
-                        bottomLeft = None
-                
-                    if x != self.visibleColomns - 1:
-                        bottomRight = adjustedTilemap[y + 1][x + 1]
-                    else:
-                        bottomRight = None
-
-                else:
-                    bottomLeft = None
-                    bottomCentre = None
-                    bottomRight = None
+                surroundingTiles = self.getSurroundingTiles(x, y, adjustedTilemap)
 
                 if tile.type == "grass":
-                    if topCentre != None and bottomCentre != None:
-                        if topCentre.type == "dirt" and bottomCentre.type == "dirt":
+                    if "topCentre" in surroundingTiles and "bottomCentre" in surroundingTiles:
+                        if surroundingTiles["topCentre"].type == "dirt" and surroundingTiles["bottomCentre"].type == "dirt":
                             tile.type = "dirt"
 
-                    if middleRight != None and middleLeft != None:
-                        if middleRight.type == "dirt" and middleLeft.type == "dirt":
+                    if "middleRight" in surroundingTiles and "middleLeft" in surroundingTiles:
+                        if surroundingTiles["middleRight"].type == "dirt" and surroundingTiles["middleLeft"].type == "dirt":
                             tile.type = "dirt"
 
 
 
 
                 if tile.type == "dirt":
-                    if bottomCentre != None and middleRight != None:
-                        if bottomCentre.type == "dirt" and middleRight.type == "dirt":
-                            if topCentre != None and middleLeft != None:
-                                if topCentre.type == "grass" and middleLeft.type == "grass":
+                    if "bottomCentre" in surroundingTiles and "middleRight" in surroundingTiles:
+                        if surroundingTiles["bottomCentre"].type == "dirt" and surroundingTiles["middleRight"].type == "dirt":
+                            if "topCentre" in surroundingTiles and "middleLeft" in surroundingTiles:
+                                if surroundingTiles["topCentre"].type == "grass" and surroundingTiles["middleLeft"].type == "grass":
                                     tile.ID = TOP_LEFT_DIRT_CORNER_ID
                             else:
                                 tile.ID = TOP_LEFT_DIRT_CORNER_ID
 
                             
-                    if bottomCentre != None and middleLeft != None:
-                        if bottomCentre.type == "dirt" and middleLeft.type == "dirt":
-                            if topCentre != None and middleRight != None:
-                                if topCentre.type == "grass" and middleRight.type == "grass":
+                    if "bottomCentre" in surroundingTiles and "middleLeft" in surroundingTiles:
+                        if surroundingTiles["bottomCentre"].type == "dirt" and surroundingTiles["middleLeft"].type == "dirt":
+                            if "topCentre" in surroundingTiles and "middleRight" in surroundingTiles:
+                                if surroundingTiles["topCentre"].type == "grass" and surroundingTiles["middleRight"].type == "grass":
                                     tile.ID = TOP_RIGHT_DIRT_CORNER_ID
                             else:
                                 tile.ID = TOP_RIGHT_DIRT_CORNER_ID
 
-                    if topCentre != None and middleRight != None:
-                        if topCentre.type == "dirt" and middleRight.type == "dirt":
-                            if bottomCentre != None and middleLeft != None:
-                                if bottomCentre.type == "grass" and middleLeft.type == "grass":
+                    if "topCentre" in surroundingTiles and "middleRight" in surroundingTiles:
+                        if surroundingTiles["topCentre"].type == "dirt" and surroundingTiles["middleRight"].type == "dirt":
+                            if "bottomCentre" in surroundingTiles and "middleLeft" in surroundingTiles:
+                                if surroundingTiles["bottomCentre"].type == "grass" and surroundingTiles["middleLeft"].type == "grass":
                                     tile.ID = BOTTOM_LEFT_DIRT_CORNER_ID
                             else:
                                 tile.ID = BOTTOM_LEFT_DIRT_CORNER_ID
 
-                    if topCentre != None and middleLeft != None:
-                        if topCentre.type == "dirt" and middleLeft.type == "dirt":
-                            if bottomCentre != None and middleRight != None:
-                                if bottomCentre.type == "grass" and middleRight.type == "grass":
+                    if "topCentre" in surroundingTiles and "middleLeft" in surroundingTiles:
+                        if surroundingTiles["topCentre"].type == "dirt" and surroundingTiles["middleLeft"].type == "dirt":
+                            if "bottomCentre" in surroundingTiles and "middleRight" in surroundingTiles:
+                                if surroundingTiles["bottomCentre"].type == "grass" and surroundingTiles["middleRight"].type == "grass":
                                     tile.ID = BOTTOM_RIGHT_DIRT_CORNER_ID
                             else:
                                 tile.ID = BOTTOM_RIGHT_DIRT_CORNER_ID
@@ -155,96 +196,83 @@ class Tilemap:
                 x = row.index(tile)
 
 
-                if y != 0: #checks that it is not the top row, if it is top row assign none to topLeft, topCentre, topRight
-                    topCentre = adjustedTilemap[y - 1][x]
-                    if x != 0:
-                        topLeft = adjustedTilemap[y - 1][x - 1]
-                    else:
-                        topLeft = None
+                surroundingTiles = self.getSurroundingTiles(x, y, adjustedTilemap)
 
-                    if x != self.visibleColomns - 1:
-                        topRight = adjustedTilemap[y - 1][x + 1]
-                    else:
-                        topRight = None
-
-                else:
-                    topLeft = None
-                    topCentre = None
-                    topRight = None
-
-                if x != 0: #checks the middle row
-                    middleLeft = adjustedTilemap[y][x - 1]
-                else:
-                    middleLeft = None
-                if x != self.visibleColomns - 1:
-                    middleRight = adjustedTilemap[y][x + 1]
-                else:
-                    middleRight = None
-
-                if y != self.visibleRows - 1: #checks that it is not the bottom row, if it is bottom row assign none to bottomLeft, bottomCentre, bottomRight
-                    bottomCentre = adjustedTilemap[y + 1][x]
-                    if x != 0:
-                        bottomLeft = adjustedTilemap[y + 1][x - 1]
-                    else:
-                        bottomLeft = None
-                
-                    if x != self.visibleColomns - 1:
-                        bottomRight = adjustedTilemap[y + 1][x + 1]
-                    else:
-                        bottomRight = None
-
-                else:
-                    bottomLeft = None
-                    bottomCentre = None
-                    bottomRight = None
          
 
                 if tile.type == "grass":
-                    if bottomCentre != None:
-                        if bottomCentre.ID == PLAIN_DIRT_ID:
+                    if "bottomCentre" in surroundingTiles:
+                        if surroundingTiles["bottomCentre"].ID == PLAIN_DIRT_ID:
                             tile.ID = UPPER_DIRT_EDGE_ID
 
-                    if middleRight != None:
-                        if middleRight.ID == PLAIN_DIRT_ID:
+                    if "middleRight" in surroundingTiles:
+                        if surroundingTiles["middleRight"].ID == PLAIN_DIRT_ID:
                             tile.ID = LEFT_DIRT_EDGE_ID
 
-                    if middleLeft != None:
-                        if middleLeft.ID == PLAIN_DIRT_ID:
+                    if "middleLeft" in surroundingTiles:
+                        if surroundingTiles["middleLeft"].ID == PLAIN_DIRT_ID:
                             tile.ID = RIGHT_DIRT_EDGE_ID
 
-                    if topCentre != None:
-                        if topCentre.ID == PLAIN_DIRT_ID:
+                    if "topCentre" in surroundingTiles:
+                        if surroundingTiles["topCentre"].ID == PLAIN_DIRT_ID:
                             tile.ID = BOTTOM_DIRT_EDGE_ID
 
-                    if topCentre != None and middleLeft != None: #checks if needs top left 
-                        if topCentre.ID == PLAIN_DIRT_ID and middleLeft.ID == PLAIN_DIRT_ID:
+                    if "topCentre" in surroundingTiles and "middleLeft" in surroundingTiles: #checks if needs top left 
+                        if surroundingTiles["topCentre"].ID == PLAIN_DIRT_ID and surroundingTiles["middleLeft"].ID == PLAIN_DIRT_ID:
                             tile.ID = TOP_LEFT_DIRT_EDGE_ID
 
-                    if topCentre != None and middleRight != None:
-                        if topCentre.ID == PLAIN_DIRT_ID and middleRight.ID == PLAIN_DIRT_ID:
+                    if "topCentre" in surroundingTiles and "middleRight" in surroundingTiles:
+                        if surroundingTiles["topCentre"].ID == PLAIN_DIRT_ID and surroundingTiles["middleRight"].ID == PLAIN_DIRT_ID:
                             tile.ID = TOP_RIGHT_DIRT_EDGE_ID
 
-                    if bottomCentre != None and middleRight != None:
-                        if bottomCentre.ID == PLAIN_DIRT_ID and middleRight.ID == PLAIN_DIRT_ID:
+                    if "bottomCentre" in surroundingTiles and "middleRight" in surroundingTiles:
+                        if surroundingTiles["bottomCentre"].ID == PLAIN_DIRT_ID and surroundingTiles["middleRight"].ID == PLAIN_DIRT_ID:
                             tile.ID = BOTTOM_RIGHT_DIRT_EDGE_ID
 
-                    if bottomCentre != None and middleLeft != None:
-                        if bottomCentre.ID == PLAIN_DIRT_ID and middleLeft.ID == PLAIN_DIRT_ID:
+                    if "bottomCentre" in surroundingTiles and "middleLeft" in surroundingTiles:
+                        if surroundingTiles["bottomCentre"].ID == PLAIN_DIRT_ID and surroundingTiles["middleLeft"].ID == PLAIN_DIRT_ID:
                             tile.ID = BOTTOM_LEFT_DIRT_EDGE_ID
 
         return adjustedTilemap
 
+    def emptyWaterTiles(self, tilemap):
+        updatedTilemap = tilemap
+        for row in updatedTilemap:
+            for tile in row:
+                if tile.type == "water":
+                    tile.ID = EMPTY_ID
+
+        return updatedTilemap
 
 
     def update(self, params):
         self.visibleTilemap = self.getVisibleTilemap(self.tilemap, params["xOffset"], params["yOffset"])
-        self.visibleTilemap = self.getAdjustedDirtTiles(self.visibleTilemap)
+        self.visibleTilemap = self.emptyWaterTiles(self.visibleTilemap)
+
+        self.visibleTilemap = self.adjustDirtTiles(self.visibleTilemap)
+        self.visibleTilemap = self.adjustWaterTiles(self.visibleTilemap) #make sure that adjust water tiles is always after adjust Dirt Tiles
+
+
+        self.visibleWaterTilemap = self.getVisibleTilemap(self.waterTilemap, params["xOffset"], params["yOffset"])
+
         for row in self.visibleTilemap:
             for tile in row:
                 tile.update(params)
 
+        for row in self.visibleWaterTilemap:
+            for tile in row:
+                if tile.type == "water":
+                    tile.ID = WATER_ID
+
+                tile.update(params)
+        
+
 
     def render(self, params):
+        for row in self.visibleWaterTilemap: #place the water tilemap under the land tilemap
+            for tile in row:
+                tile.render(params)
+        
         for row in self.visibleTilemap:
             for tile in row:
                 tile.render(params)

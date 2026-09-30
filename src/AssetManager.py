@@ -10,6 +10,8 @@ from src.util import *
 gTextures = {
     #tileset
     "tileset":pygame.image.load("assets/Overworld_Tileset.png"),
+    "water_tile":pygame.image.load("assets/water_tile_anim_strip_8.png"),
+    "edge_water_tile":pygame.image.load("assets/edge_water_tile_anim_strip_8.png"),
 
     #special cursors
     "cursor":pygame.image.load("assets/gui/cursors/cursor.png"),
@@ -51,9 +53,10 @@ gTextures = {
 
 
 }
+#combines the normal tileset, the water tileset and the water edge tileset into one tileset
 
 gFrames = {
-    "tileset":generateTileSets(gTextures["tileset"], TILE_WIDTH, TILE_HEIGHT)
+    "tileset":generateTileSets(gTextures["tileset"], TILE_WIDTH, TILE_HEIGHT) + generateTileSets(gTextures["water_tile"], TILE_WIDTH, TILE_HEIGHT) + generateTileSets(gTextures["edge_water_tile"], TILE_WIDTH, TILE_HEIGHT)
 }
 
 gFonts = {
